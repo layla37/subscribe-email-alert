@@ -69,6 +69,9 @@ function my_edit_user_profile_update( $user_id )
 		
 		//store the user category subscriptions
 		update_user_meta($uid, 'catsub_categories', $category_string);
+	} else {
+		//make sure that the user is unsubscribed from all categories
+		update_user_meta($uid, 'catsub_categories', '');
 	}
 		
 	//#error_log(print_r($_POST, true));
