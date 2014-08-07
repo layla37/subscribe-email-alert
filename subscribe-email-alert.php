@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Category Subscription LM
-Plugin URI: http://www.laylamandella.com
+Plugin URI: https://github.com/layla37/subscribe-email-alert
 Description: A plugin to email subscribers of particular categories when a post or comment has been made.
 Version: 1.0
 Author: Layla Mandella and Mike Schachter
-Author URI: http://www.laylamandella.com
+Author URI: https://github.com/layla37/subscribe-email-alert
 License: GPL2
 */
 
@@ -56,16 +56,12 @@ function my_edit_user_profile_update( $user_id )
 	//get the array of categories that were selected
 	$user_categories = $_POST['catsub_catname'];
 	
-	#error_log('These are the user categories selected in the profile form:');
-	#error_log(print_r($user_categories, true));
 	
 	//we only care of one or more categories was selected
 	if (count($user_categories) > 0)
 	{
 		//concatenate the categories into one big string
 		$category_string = implode($user_categories, ',');
-		#error_log('This is the string that will be saved to the database for the user:');
-		#error_log($category_string);
 		
 		//store the user category subscriptions
 		update_user_meta($uid, 'catsub_categories', $category_string);
@@ -74,7 +70,6 @@ function my_edit_user_profile_update( $user_id )
 		update_user_meta($uid, 'catsub_categories', '');
 	}
 		
-	//#error_log(print_r($_POST, true));
 }
 
 /*
@@ -105,7 +100,7 @@ function add_extra_profile_fields($user)
     
     
 	$categories=get_categories(array('hide_empty'=>0));
-	//#error_log(print_r($categories, true));
+
   	foreach($categories as $category)
   	{ 
     	echo "\n";
@@ -133,7 +128,6 @@ function user_should_be_emailed($user_categories, $post_categories)
 		{
 			foreach ($post_categories as $pcat)
 			{
-				//#error_log("checking user category $ucat vs post category $pcat->name");
 				if ($ucat == $pcat->name)
 				{
 					return true;
@@ -165,7 +159,6 @@ function get_subscribers_to_category($post_categories)
         }
         
         //check to see if the user should be emailed for this post
-     	#error_log($user->ID);
     }
     return $users_to_email;
 }
@@ -179,12 +172,7 @@ function catsub_publish($post_id)
 	
 	#get an array of categories for the post
 	$post_categories = get_the_category($post_id);
-	/*
-	foreach ($post_categories as $value)
-	{
-		#error_log(print_r($value, true));
-	}
-	*/
+
 
 	#get a list of users that are subscribed to the categories and need to be emailed
 	$users_to_email = get_subscribers_to_category($post_categories);
